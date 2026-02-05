@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: innovation_postgres
+    environment:
+      POSTGRES_DB: innovation_dashboard
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d innovation_dashboard"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: innovation_pgbouncer
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/innovation_dashboard
+    ports:
+      - "6432:6432"
+    volumes:
+      - ./docker/pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ./docker/pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
