@@ -3,6 +3,8 @@ import { ArrowLeft } from "lucide-react";
 import { getAllProjectOptions } from "@/lib/db/queries/lessons";
 import { LessonForm } from "@/components/lessons/lesson-form";
 
+export const dynamic = "force-dynamic";
+
 export default async function CreateLessonPage() {
   const allProjects = await getAllProjectOptions();
 

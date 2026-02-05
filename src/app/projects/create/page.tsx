@@ -3,6 +3,8 @@ import { ArrowLeft } from "lucide-react";
 import { getDepartments } from "@/lib/db/queries/projects";
 import { ProjectForm } from "@/components/projects/project-form";
 
+export const dynamic = "force-dynamic";
+
 export default async function CreateProjectPage() {
   const departments = await getDepartments();
 
