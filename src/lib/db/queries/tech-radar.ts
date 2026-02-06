@@ -10,6 +10,7 @@ type TechRadarItem = typeof techRadar.$inferSelect;
 export interface TechRadarFilters {
   search?: string;
   category?: string;
+  quadrant?: string;
 }
 
 export interface TechRadarCategoryGroup {
@@ -27,12 +28,16 @@ const CATEGORY_ORDER = ["adopt", "explore", "consolidate", "avoid"] as const;
 export async function getTechRadarItems(
   filters: TechRadarFilters = {},
 ): Promise<TechRadarItem[]> {
-  const { search, category } = filters;
+  const { search, category, quadrant } = filters;
 
   const conditions: SQL[] = [isNull(techRadar.deletedAt)];
 
   if (category) {
     conditions.push(eq(techRadar.category, category));
+  }
+
+  if (quadrant) {
+    conditions.push(eq(techRadar.quadrant, quadrant));
   }
 
   if (search) {
@@ -106,6 +111,26 @@ export async function getTechRadarGroupedByCategory(
   }
 
   return groups;
+}
+
+// ─── getTechRadarForRadarView ────────────────────────────────────────────────
+
+const QUADRANT_ORDER = ["languages-frameworks", "tools", "platforms", "techniques"] as const;
+const RING_ORDER = ["adopt", "explore", "consolidate", "avoid"] as const;
+
+export async function getTechRadarForRadarView(
+  search?: string,
+): Promise<TechRadarItem[]> {
+  const items = await getTechRadarItems({ search });
+
+  return items.sort((a, b) => {
+    const qA = QUADRANT_ORDER.indexOf(a.quadrant as typeof QUADRANT_ORDER[number]);
+    const qB = QUADRANT_ORDER.indexOf(b.quadrant as typeof QUADRANT_ORDER[number]);
+    if (qA !== qB) return qA - qB;
+    const rA = RING_ORDER.indexOf(a.category as typeof RING_ORDER[number]);
+    const rB = RING_ORDER.indexOf(b.category as typeof RING_ORDER[number]);
+    return rA - rB;
+  });
 }
 
 // ─── getTechRadarStats ──────────────────────────────────────────────────────

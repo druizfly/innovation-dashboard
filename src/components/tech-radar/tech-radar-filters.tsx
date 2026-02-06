@@ -14,11 +14,13 @@ const DEBOUNCE_MS = 300;
 interface TechRadarFiltersProps {
   categories: string[];
   itemCounts: Record<string, number>;
+  radarMode?: boolean;
 }
 
 export function TechRadarFilters({
   categories,
   itemCounts,
+  radarMode,
 }: TechRadarFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -98,62 +100,64 @@ export function TechRadarFilters({
         )}
       </div>
 
-      {/* Category filter tabs */}
-      <div className="flex flex-wrap gap-1.5">
-        <button
-          type="button"
-          onClick={() => updateParams({ category: null })}
-          className={
-            !currentCategory
-              ? "rounded-full ring-2 ring-ring ring-offset-1"
-              : "rounded-full opacity-50 hover:opacity-80"
-          }
-          aria-pressed={!currentCategory}
-          aria-label="Show all categories"
-        >
-          <span className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium">
-            All
-            <span className="text-muted-foreground">{totalCount}</span>
-          </span>
-        </button>
+      {/* Category filter tabs (hidden in radar mode) */}
+      {!radarMode && (
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            type="button"
+            onClick={() => updateParams({ category: null })}
+            className={
+              !currentCategory
+                ? "rounded-full ring-2 ring-ring ring-offset-1"
+                : "rounded-full opacity-50 hover:opacity-80"
+            }
+            aria-pressed={!currentCategory}
+            aria-label="Show all categories"
+          >
+            <span className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium">
+              All
+              <span className="text-muted-foreground">{totalCount}</span>
+            </span>
+          </button>
 
-        {CATEGORIES.filter((cat) => categories.includes(cat)).map(
-          (category) => {
-            const isActive = currentCategory === category;
-            const count = itemCounts[category] ?? 0;
+          {CATEGORIES.filter((cat) => categories.includes(cat)).map(
+            (category) => {
+              const isActive = currentCategory === category;
+              const count = itemCounts[category] ?? 0;
 
-            return (
-              <button
-                key={category}
-                type="button"
-                onClick={() => handleCategoryClick(category)}
-                className={
-                  isActive
-                    ? "rounded-full ring-2 ring-ring ring-offset-1"
-                    : "rounded-full opacity-50 hover:opacity-80"
-                }
-                aria-pressed={isActive}
-                aria-label={`Filter by category: ${category}`}
-              >
-                <span className="inline-flex items-center gap-1">
-                  <CategoryBadge
-                    category={
-                      category as
-                        | "adopt"
-                        | "explore"
-                        | "consolidate"
-                        | "avoid"
-                    }
-                  />
-                  <span className="text-muted-foreground pr-1 text-xs">
-                    {count}
+              return (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => handleCategoryClick(category)}
+                  className={
+                    isActive
+                      ? "rounded-full ring-2 ring-ring ring-offset-1"
+                      : "rounded-full opacity-50 hover:opacity-80"
+                  }
+                  aria-pressed={isActive}
+                  aria-label={`Filter by category: ${category}`}
+                >
+                  <span className="inline-flex items-center gap-1">
+                    <CategoryBadge
+                      category={
+                        category as
+                          | "adopt"
+                          | "explore"
+                          | "consolidate"
+                          | "avoid"
+                      }
+                    />
+                    <span className="text-muted-foreground pr-1 text-xs">
+                      {count}
+                    </span>
                   </span>
-                </span>
-              </button>
-            );
-          },
-        )}
-      </div>
+                </button>
+              );
+            },
+          )}
+        </div>
+      )}
     </div>
   );
 }

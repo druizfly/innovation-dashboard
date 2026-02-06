@@ -45,6 +45,7 @@ export default async function EditTechRadarPage({
           id: item.id,
           technologyName: item.technologyName,
           category: item.category,
+          quadrant: item.quadrant,
           description: item.description,
           rationale: item.rationale,
           updatedAt: item.updatedAt,

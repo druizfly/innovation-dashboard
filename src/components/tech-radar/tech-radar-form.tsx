@@ -26,11 +26,19 @@ const CATEGORIES = [
   { value: "avoid", label: "Avoid" },
 ] as const;
 
+const QUADRANTS = [
+  { value: "languages-frameworks", label: "Languages & Frameworks" },
+  { value: "tools", label: "Tools" },
+  { value: "platforms", label: "Platforms" },
+  { value: "techniques", label: "Techniques" },
+] as const;
+
 interface TechRadarFormProps {
   item?: {
     id: number;
     technologyName: string;
     category: string;
+    quadrant: string;
     description: string | null;
     rationale: string | null;
     updatedAt: Date;
@@ -106,6 +114,26 @@ export function TechRadarForm({ item }: TechRadarFormProps) {
                 {CATEGORIES.map((cat) => (
                   <SelectItem key={cat.value} value={cat.value}>
                     {cat.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="quadrant">Quadrant *</Label>
+            <Select
+              name="quadrant"
+              defaultValue={item?.quadrant ?? ""}
+              required
+            >
+              <SelectTrigger id="quadrant">
+                <SelectValue placeholder="Select quadrant" />
+              </SelectTrigger>
+              <SelectContent>
+                {QUADRANTS.map((q) => (
+                  <SelectItem key={q.value} value={q.value}>
+                    {q.label}
                   </SelectItem>
                 ))}
               </SelectContent>

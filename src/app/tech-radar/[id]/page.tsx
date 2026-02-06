@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CategoryBadge } from "@/components/tech-radar/category-badge";
+import { QuadrantBadge } from "@/components/tech-radar/quadrant-badge";
 import { DeleteTechRadarButton } from "@/components/tech-radar/delete-tech-radar-button";
 
 interface TechRadarDetailPageProps {
@@ -48,11 +49,22 @@ export default async function TechRadarDetailPage({
           <h2 className="text-2xl font-bold tracking-tight">
             {item.technologyName}
           </h2>
-          <CategoryBadge
-            category={
-              item.category as "adopt" | "explore" | "consolidate" | "avoid"
-            }
-          />
+          <div className="flex gap-2">
+            <CategoryBadge
+              category={
+                item.category as "adopt" | "explore" | "consolidate" | "avoid"
+              }
+            />
+            <QuadrantBadge
+              quadrant={
+                item.quadrant as
+                  | "languages-frameworks"
+                  | "tools"
+                  | "platforms"
+                  | "techniques"
+              }
+            />
+          </div>
         </div>
         <div className="flex gap-2">
           <Link href={`/tech-radar/${item.id}/edit`}>

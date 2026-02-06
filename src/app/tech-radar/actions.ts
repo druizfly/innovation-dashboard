@@ -71,6 +71,7 @@ export async function createTechRadarItem(
       .values({
         technologyName: parsed.data.technologyName,
         category: parsed.data.category,
+        quadrant: parsed.data.quadrant,
         description: parsed.data.description,
         rationale: parsed.data.rationale,
         createdBy: parsed.data.createdBy,
