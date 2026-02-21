@@ -17,7 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   createTechRadarItem,
   updateTechRadarItem,
-} from "@/app/tech-radar/actions";
+} from "@/app/(public)/tech-radar/actions";
 
 const CATEGORIES = [
   { value: "adopt", label: "Adopt" },
@@ -42,13 +42,14 @@ interface TechRadarFormProps {
     description: string | null;
     rationale: string | null;
     url: string | null;
-    updatedAt: Date;
+    updatedAt: string;
   };
+  basePath?: string;
 }
 
 type FormState = { error?: string; success?: boolean } | null;
 
-export function TechRadarForm({ item }: TechRadarFormProps) {
+export function TechRadarForm({ item, basePath = "/tech-radar" }: TechRadarFormProps) {
   const router = useRouter();
   const isEditing = !!item;
 
@@ -57,17 +58,17 @@ export function TechRadarForm({ item }: TechRadarFormProps) {
     formData: FormData,
   ): Promise<FormState> {
     if (isEditing) {
-      formData.set("expectedUpdatedAt", item!.updatedAt.toISOString());
+      formData.set("expectedUpdatedAt", item!.updatedAt);
       const result = await updateTechRadarItem(item!.id, formData);
       if (result.success) {
-        router.push("/tech-radar");
+        router.push(basePath);
         return { success: true };
       }
       return { error: result.error };
     } else {
       const result = await createTechRadarItem(formData);
       if (result.success) {
-        router.push("/tech-radar");
+        router.push(basePath);
         return { success: true };
       }
       return { error: result.error };

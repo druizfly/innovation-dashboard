@@ -56,6 +56,17 @@ npm run db:seed      # Seed sample data
 
 - TanStack Table `useReactTable` triggers React Compiler `incompatible-library` warning — this is expected and harmless
 
+## React Compiler Lint Rules
+
+- `react-hooks/refs` — cannot read `ref.current` during render (in JSX, `useMemo`, etc.) — only in callbacks/effects
+- `react-hooks/set-state-in-effect` — cannot call `setState` synchronously inside `useEffect` — derive values via `useMemo` instead
+
+## Deployment (Vercel)
+
+- `vercel-build` script runs `next build` only — no schema migrations in CI
+- `search_vector` columns exist in DB via raw SQL but are NOT in the Drizzle schema — `drizzle-kit push` will try to drop them
+- Vercel env vars: `DATABASE_URL` and `DIRECT_DATABASE_URL` point to Neon (not local Docker)
+
 ## File Organization
 
 ```

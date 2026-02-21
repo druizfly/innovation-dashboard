@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createProject, updateProject } from "@/app/projects/actions";
+import { createProject, updateProject } from "@/app/(public)/projects/actions";
 
 const STATUSES = [
   { value: "idea", label: "Idea" },
@@ -43,29 +43,30 @@ interface ProjectFormProps {
     decisionDate: string | null;
     decisionNotes: string | null;
     startDate: string | null;
-    updatedAt: Date;
+    updatedAt: string;
   };
+  basePath?: string;
 }
 
 type FormState = { error?: string; success?: boolean } | null;
 
-export function ProjectForm({ departments, project }: ProjectFormProps) {
+export function ProjectForm({ departments, project, basePath = "/projects" }: ProjectFormProps) {
   const router = useRouter();
   const isEditing = !!project;
 
   async function formAction(_prevState: FormState, formData: FormData): Promise<FormState> {
     if (isEditing) {
-      formData.set("expectedUpdatedAt", project!.updatedAt.toISOString());
+      formData.set("expectedUpdatedAt", project!.updatedAt);
       const result = await updateProject(project!.id, formData);
       if (result.success) {
-        router.push(`/projects/${project!.id}`);
+        router.push(`${basePath}/${project!.id}`);
         return { success: true };
       }
       return { error: result.error };
     } else {
       const result = await createProject(formData);
       if (result.success) {
-        router.push(`/projects/${result.id}`);
+        router.push(`${basePath}/${result.id}`);
         return { success: true };
       }
       return { error: result.error };

@@ -13,16 +13,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { deleteProject } from "@/app/projects/actions";
+import { deleteProject } from "@/app/(public)/projects/actions";
 
 interface DeleteProjectButtonProps {
   projectId: number;
   projectName: string;
+  redirectPath?: string;
 }
 
 export function DeleteProjectButton({
   projectId,
   projectName,
+  redirectPath = "/projects",
 }: DeleteProjectButtonProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -35,7 +37,7 @@ export function DeleteProjectButton({
 
     if (result.success) {
       setOpen(false);
-      router.push("/projects");
+      router.push(redirectPath);
     }
   }
 

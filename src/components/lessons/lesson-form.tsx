@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { createLesson, updateLesson } from "@/app/lessons/actions";
+import { createLesson, updateLesson } from "@/app/(public)/lessons/actions";
 
 interface LessonFormProps {
   allProjects: { id: number; name: string }[];
@@ -19,13 +19,14 @@ interface LessonFormProps {
     author: string;
     tags: string[];
     relatedProjects: { id: number; name: string }[];
-    updatedAt: Date;
+    updatedAt: string;
   };
+  basePath?: string;
 }
 
 type FormState = { error?: string; success?: boolean } | null;
 
-export function LessonForm({ allProjects, lesson }: LessonFormProps) {
+export function LessonForm({ allProjects, lesson, basePath = "/lessons" }: LessonFormProps) {
   const router = useRouter();
   const isEditing = !!lesson;
 
@@ -39,17 +40,17 @@ export function LessonForm({ allProjects, lesson }: LessonFormProps) {
     formData: FormData,
   ): Promise<FormState> {
     if (isEditing) {
-      formData.set("expectedUpdatedAt", lesson!.updatedAt.toISOString());
+      formData.set("expectedUpdatedAt", lesson!.updatedAt);
       const result = await updateLesson(lesson!.id, formData);
       if (result.success) {
-        router.push(`/lessons/${lesson!.id}`);
+        router.push(`${basePath}/${lesson!.id}`);
         return { success: true };
       }
       return { error: result.error };
     } else {
       const result = await createLesson(formData);
       if (result.success) {
-        router.push(`/lessons/${result.id}`);
+        router.push(`${basePath}/${result.id}`);
         return { success: true };
       }
       return { error: result.error };

@@ -42,6 +42,7 @@ interface ProjectTableProps {
   totalCount: number;
   page: number;
   pageSize: number;
+  basePath?: string;
 }
 
 const MAX_VISIBLE_TAGS = 3;
@@ -52,13 +53,14 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
 });
 
-const columns: ColumnDef<Project>[] = [
+function getColumns(basePath: string): ColumnDef<Project>[] {
+  return [
   {
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
       <Link
-        href={`/projects/${row.original.id}`}
+        href={`${basePath}/${row.original.id}`}
         className="text-foreground hover:text-primary font-medium underline-offset-4 hover:underline"
         onClick={(e) => e.stopPropagation()}
       >
@@ -159,16 +161,20 @@ const columns: ColumnDef<Project>[] = [
       );
     },
   },
-];
+  ];
+}
 
 export function ProjectTable({
   projects,
   totalCount,
   page,
   pageSize,
+  basePath = "/projects",
 }: ProjectTableProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const columns = useMemo(() => getColumns(basePath), [basePath]);
 
   const table = useReactTable({
     data: projects,
@@ -197,9 +203,9 @@ export function ProjectTable({
 
   const handleRowClick = useCallback(
     (projectId: number) => {
-      router.push(`/projects/${projectId}`);
+      router.push(`${basePath}/${projectId}`);
     },
-    [router],
+    [router, basePath],
   );
 
   // Memoize the empty state check

@@ -13,16 +13,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { deleteTechRadarItem } from "@/app/tech-radar/actions";
+import { deleteTechRadarItem } from "@/app/(public)/tech-radar/actions";
 
 interface DeleteTechRadarButtonProps {
   itemId: number;
   itemName: string;
+  redirectPath?: string;
 }
 
 export function DeleteTechRadarButton({
   itemId,
   itemName,
+  redirectPath = "/tech-radar",
 }: DeleteTechRadarButtonProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -35,7 +37,7 @@ export function DeleteTechRadarButton({
 
     if (result.success) {
       setOpen(false);
-      router.push("/tech-radar");
+      router.push(redirectPath);
     }
   }
 

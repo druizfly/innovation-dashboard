@@ -13,16 +13,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { deleteLesson } from "@/app/lessons/actions";
+import { deleteLesson } from "@/app/(public)/lessons/actions";
 
 interface DeleteLessonButtonProps {
   lessonId: number;
   lessonTitle: string;
+  redirectPath?: string;
 }
 
 export function DeleteLessonButton({
   lessonId,
   lessonTitle,
+  redirectPath = "/lessons",
 }: DeleteLessonButtonProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -35,7 +37,7 @@ export function DeleteLessonButton({
 
     if (result.success) {
       setOpen(false);
-      router.push("/lessons");
+      router.push(redirectPath);
     }
   }
 

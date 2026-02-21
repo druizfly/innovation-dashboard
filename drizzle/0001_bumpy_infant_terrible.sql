@@ -1,0 +1,1 @@
+ALTER TABLE "tech_radar" ADD COLUMN "quadrant" varchar(30) NOT NULL;
