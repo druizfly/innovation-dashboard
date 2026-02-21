@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Pencil, Clock } from "lucide-react";
+import { ArrowLeft, Pencil, Clock, ExternalLink } from "lucide-react";
 import { getTechRadarItemById } from "@/lib/db/queries/tech-radar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -102,6 +102,25 @@ export default async function TechRadarDetailPage({
             <p className="text-muted-foreground leading-relaxed">
               {item.rationale}
             </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {item.url && (
+        <Card>
+          <CardHeader>
+            <CardTitle>URL</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary inline-flex items-center gap-1 hover:underline"
+            >
+              {item.url}
+              <ExternalLink className="h-4 w-4" />
+            </a>
           </CardContent>
         </Card>
       )}

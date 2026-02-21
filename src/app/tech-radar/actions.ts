@@ -74,6 +74,7 @@ export async function createTechRadarItem(
         quadrant: parsed.data.quadrant,
         description: parsed.data.description,
         rationale: parsed.data.rationale,
+        url: parsed.data.url,
         createdBy: parsed.data.createdBy,
         updatedBy: parsed.data.updatedBy,
       })

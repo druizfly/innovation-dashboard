@@ -20,6 +20,7 @@ export const createTechRadarSchema = z.object({
   quadrant: techRadarQuadrantEnum,
   description: z.string().optional(),
   rationale: z.string().optional(),
+  url: z.string().url().max(500).optional(),
   createdBy: z.string().min(1).max(255),
   updatedBy: z.string().min(1).max(255),
 });

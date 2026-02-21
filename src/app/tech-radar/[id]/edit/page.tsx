@@ -48,6 +48,7 @@ export default async function EditTechRadarPage({
           quadrant: item.quadrant,
           description: item.description,
           rationale: item.rationale,
+          url: item.url,
           updatedAt: item.updatedAt,
         }}
       />

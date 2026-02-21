@@ -41,6 +41,7 @@ interface TechRadarFormProps {
     quadrant: string;
     description: string | null;
     rationale: string | null;
+    url: string | null;
     updatedAt: Date;
   };
 }
@@ -159,6 +160,18 @@ export function TechRadarForm({ item }: TechRadarFormProps) {
               rows={4}
               defaultValue={item?.rationale ?? ""}
               placeholder="Why is this technology in this category? What are the key factors behind this decision?"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="url">URL</Label>
+            <Input
+              id="url"
+              name="url"
+              type="url"
+              maxLength={500}
+              defaultValue={item?.url ?? ""}
+              placeholder="https://example.com/docs"
             />
           </div>
         </CardContent>

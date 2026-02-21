@@ -78,6 +78,7 @@ export const techRadar = pgTable("tech_radar", {
   quadrant: varchar("quadrant", { length: 30 }).notNull(), // languages-frameworks | tools | platforms | techniques
   description: text("description"),
   rationale: text("rationale"),
+  url: varchar("url", { length: 500 }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   createdBy: varchar("created_by", { length: 255 }).notNull(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
