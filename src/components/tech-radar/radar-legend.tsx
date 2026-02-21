@@ -89,9 +89,14 @@ export function RadarLegend({
                             isHighlighted ? "bg-muted font-medium" : ""
                           }`}
                           aria-label={`${blip.technologyName} — ${ring.label} ring`}
-                          onClick={() => {
+                          onMouseEnter={() => {
                             if (onBlipHighlight) {
-                              onBlipHighlight(isHighlighted ? null : blip.id);
+                              onBlipHighlight(blip.id);
+                            }
+                          }}
+                          onMouseLeave={() => {
+                            if (onBlipHighlight) {
+                              onBlipHighlight(null);
                             }
                           }}
                           onDoubleClick={() => {

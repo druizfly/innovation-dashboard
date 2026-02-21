@@ -51,6 +51,14 @@ export function TechRadarChart({
     return resolveCollisions(positioned);
   }, [items]);
 
+  // Show legend tooltip when highlightedId is set and no chart blip is hovered
+  const legendTooltip = useMemo(() => {
+    if (hoveredBlip != null || highlightedId == null) return null;
+    const blip = blips.find((b) => b.id === highlightedId);
+    if (!blip) return null;
+    return { blip, x: blip.x, y: blip.y };
+  }, [highlightedId, blips, hoveredBlip]);
+
   const handleMouseEnter = useCallback(
     (blip: RadarBlip, event: React.MouseEvent) => {
       const container = containerRef.current;
@@ -233,6 +241,17 @@ export function TechRadarChart({
       </svg>
 
       <RadarTooltip blip={hoveredBlip} position={tooltipPos} />
+
+      {legendTooltip && (
+        <RadarTooltip
+          blip={legendTooltip.blip}
+          position={null}
+          svgPercent={{
+            xPct: (legendTooltip.x / RADAR_SIZE) * 100,
+            yPct: (legendTooltip.y / RADAR_SIZE) * 100,
+          }}
+        />
+      )}
     </div>
   );
 }
